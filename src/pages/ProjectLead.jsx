@@ -1,24 +1,53 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { databases } from "../lib/appwrite";
+import { databases } from "../lib/appwrite"; // make sure this exports a configured Databases instance
+import conf from "../lib/config"; // your Appwrite config
+
 export default function ProjectLead() {
   const [form, setForm] = useState({
-    name: "",
+    Full_name: "",
     email: "",
-    expertise: "",
-    leadershipExperience: "",
-    projectIdea: "",
+    Expertise: "",
+    Description: "",
+    Project_idea: "",
   });
 
-  const handleSubmit = (e) => {
+  const [message, setMessage] = useState("");
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`Project Lead Application submitted for: ${form.name}`);
-    // TODO: Connect to Appwrite or backend
+    try {
+      // Save form data directly to Appwrite collection
+      const response = await databases.createDocument(
+        conf.database_id,
+        conf.collection_projectLeadRegister,
+        "unique()", // let Appwrite generate a unique document ID
+        {
+          name: form.name,
+          email: form.email,
+          expertise: form.expertise,
+          leadershipExperience: form.leadershipExperience,
+          projectIdea: form.projectIdea,
+        }
+      );
+
+      setMessage("Application submitted successfully!");
+      console.log(response);
+      setForm({
+        name: "",
+        email: "",
+        expertise: "",
+        leadershipExperience: "",
+        projectIdea: "",
+      });
+    } catch (err) {
+      setMessage(err.message);
+      console.error(err);
+    }
   };
 
   return (
-    <div className="min-h-screen w-full overbg-gradient-to-br from-gray-900 via-gray-800 to-black text-white flex flex-col items-center px-6 py-10 relative overflow-hidden">
-      
+    <div className="min-h-screen w-full bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white flex flex-col items-center px-6 py-10 relative overflow-hidden">
       {/* Heading */}
       <motion.h2
         className="text-4xl md:text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 text-center"
@@ -100,8 +129,9 @@ export default function ProjectLead() {
           Apply as Project Lead
         </button>
 
-        {/* Back to Home Button */}
-        
+        {message && (
+          <p className="mt-4 text-center text-green-400 font-medium">{message}</p>
+        )}
       </motion.form>
 
       {/* Floating Glow Animation */}

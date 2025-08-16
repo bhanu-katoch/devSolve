@@ -1,12 +1,34 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { databases } from "../lib/appwrite";
+import conf from "../lib/config"; // adjust the path
+
 
 export default function RegisterJunior() {
   const [form, setForm] = useState({ name: "", email: "" });
+  const [message, setMessage] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`Junior Registration submitted for: ${form.name}`);
+
+    try {
+      const response = await databases.createDocument(
+        conf.database_id,
+        conf.collection_juniorRegister,
+        "unique()", // let Appwrite generate a unique document ID
+        {
+          Full_name: form.name,
+          email: form.email,
+        }
+      );
+      
+      setMessage("Registration successful!");
+      console.log(response);
+      setForm({ name: "", email: "" }); // reset form
+    } catch (err) {
+      setMessage(err.message);
+      console.error(err);
+    }
   };
 
   return (
@@ -17,12 +39,10 @@ export default function RegisterJunior() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
       >
-        {/* Heading */}
         <h2 className="text-3xl font-bold mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
           Junior Registration
         </h2>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
@@ -50,11 +70,11 @@ export default function RegisterJunior() {
           </button>
         </form>
 
-        {/* Back to Home Button */}
-       
+        {message && (
+          <p className="mt-4 text-center text-green-400 font-medium">{message}</p>
+        )}
       </motion.div>
 
-      {/* Floating Glow Animation */}
       <motion.div
         className="absolute w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20"
         animate={{

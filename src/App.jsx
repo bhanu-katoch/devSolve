@@ -6,6 +6,8 @@ import RegisterJunior from './pages/RegisterJunior'
 import RegisterSenior from './pages/ProjectLead'
 
 export default function App() {
+  console.log(import.meta.env.VITE_APPWRITE_ENDPOINT);
+  
   return (
     <Router>
       <Navbar/>
