@@ -10,6 +10,17 @@ export default function RegisterJunior() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com|nitp\.ac\.in$/;
+    if (!emailPattern.test(form.email)) {
+      setMessage("Invalid email !");
+      setForm({ name: "", email: "" }); // reset form
+      // Hide message after 3 seconds
+      setTimeout(() => {
+        setMessage("");
+      }, 3000);
+      return;
+    }
+
 
     try {
       const response = await databases.createDocument(
@@ -25,6 +36,10 @@ export default function RegisterJunior() {
       setMessage("Registration successful!");
       console.log(response);
       setForm({ name: "", email: "" }); // reset form
+      // Hide message after 3 seconds
+      setTimeout(() => {
+        setMessage("");
+      }, 3000);
     } catch (err) {
       setMessage(err.message);
       console.error(err);

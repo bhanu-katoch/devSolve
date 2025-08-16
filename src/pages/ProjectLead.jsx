@@ -16,6 +16,24 @@ export default function ProjectLead() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // regex
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com|nitp\.ac\.in$/;
+    if (!emailPattern.test(form.email)) {
+      setMessage("Invalid email !");
+      setForm({
+        name: "",
+        email: "",
+        expertise: "",
+        leadershipExperience: "",
+        projectIdea: "",
+      });
+      // Hide message after 3 seconds
+      setTimeout(() => {
+        setMessage("");
+      }, 3000);
+      return;
+    }
     try {
       // Save form data directly to Appwrite collection
       const response = await databases.createDocument(
@@ -40,6 +58,10 @@ export default function ProjectLead() {
         leadershipExperience: "",
         projectIdea: "",
       });
+      // Hide message after 3 seconds
+      setTimeout(() => {
+        setMessage("");
+      }, 3000);
     } catch (err) {
       setMessage(err.message);
       console.error(err);
@@ -130,8 +152,16 @@ export default function ProjectLead() {
         </button>
 
         {message && (
-          <p className="mt-4 text-center text-green-400 font-medium">{message}</p>
+        <motion.div
+          className="fixed top-50 right-50 bg-purple-500 text-white  text-xl px-4 py-2 rounded shadow-lg z-50"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+        >
+          {message}
+        </motion.div>
         )}
+
       </motion.form>
 
       {/* Floating Glow Animation */}
