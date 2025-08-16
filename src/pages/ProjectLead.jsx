@@ -153,7 +153,7 @@ export default function ProjectLead() {
 
         {message && (
         <motion.div
-          className="fixed top-50 right-50 bg-purple-500 text-white  text-xl px-4 py-2 rounded shadow-lg z-50"
+          className="fixed top-50 right-10 bg-purple-500/95 text-white  text-xl px-4 py-2 rounded shadow-lg z-50"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}

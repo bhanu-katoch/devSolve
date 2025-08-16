@@ -23,8 +23,13 @@ export default function AppLayout({ children }) {
         transition={{ duration: 0.5 }}
       >
         <Link to="/">
-          <img src={logo} alt="DevSolve Club Logo" className="h-16 w-auto" />
+        <img
+            src={logo}
+            alt="DevSolve Club Logo"
+            className="h-20 w-auto transition duration-300 ease-in-out hover:filter hover:brightness-0 hover:invert"
+        />
         </Link>
+
       </motion.nav>
 
       {/* Main content with dynamic top padding */}

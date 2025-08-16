@@ -86,7 +86,14 @@ export default function RegisterJunior() {
         </form>
 
         {message && (
-          <p className="mt-4 text-center text-green-400 font-medium">{message}</p>
+        <motion.div
+          className="fixed top-50 right-50 bg-purple-500 text-white  text-xl px-4 py-2 rounded shadow-lg z-50"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+        >
+          {message}
+        </motion.div>
         )}
       </motion.div>
 
