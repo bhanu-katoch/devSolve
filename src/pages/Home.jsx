@@ -8,13 +8,13 @@ export default function Home() {
 
       {/* Animated Heading */}
       <motion.h1
-  className="text-5xl md:text-6xl font-extrabold mb-4 text-center md:text-left text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500"
-  initial={{ opacity: 0, y: -50 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 1 }}
->
-  Welcome to DevSolve Club
-</motion.h1>
+        className="text-5xl md:text-6xl font-extrabold mb-4 text-center md:text-left text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-gray-500"
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+      >
+        Welcome to DevSolve Club
+      </motion.h1>
 
 
 
