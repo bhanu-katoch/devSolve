@@ -1,7 +1,7 @@
 @import "tailwindcss";
 /* You can add any custom styles below if needed */
 html, body {
-  min-height: 100%;
-  background: linear-gradient(to bottom right, #1f2937, #374151, #000000); /* same as your Tailwind gradient */
+  min-height: 100dvh;
+  background: linear-gradient(to bottom right, #111827, #111827, #111827); /* same as your Tailwind gradient */
   overscroll-behavior: none; /* optional, prevents iOS flash */
 }

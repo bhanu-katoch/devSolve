@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
-<div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-900 to-gray-900 text-white flex flex-col items-center justify-center px-6 relative overflow-hidden">
+<div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white flex flex-col items-center justify-center px-6 relative overflow-hidden">
 
       {/* Animated Heading */}
       <motion.h1
