@@ -1,4 +1,7 @@
-# DevSolve Club Website
+<h1>
+  <img src="src/assets/logo.png" alt="Logo" width="50" style="vertical-align: middle;"> devSolve
+</h1>
+
 
 ## 📌 Overview
 The **DevSolve Club Website** is the official online platform for our project-based, problem-solving club.  
