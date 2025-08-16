@@ -5,11 +5,11 @@ import conf from "../lib/config"; // your Appwrite config
 
 export default function ProjectLead() {
   const [form, setForm] = useState({
-    Full_name: "",
+    name: "",
     email: "",
-    Expertise: "",
-    Description: "",
-    Project_idea: "",
+    expertise: "",
+    leadershipExperience: "",
+    projectIdea: "",
   });
 
   const [message, setMessage] = useState("");
@@ -23,11 +23,11 @@ export default function ProjectLead() {
         conf.collection_projectLeadRegister,
         "unique()", // let Appwrite generate a unique document ID
         {
-          name: form.name,
+          Full_Name: form.name,
           email: form.email,
-          expertise: form.expertise,
-          leadershipExperience: form.leadershipExperience,
-          projectIdea: form.projectIdea,
+          Expertise: form.expertise,
+          Description: form.leadershipExperience,
+          Project_idea: form.projectIdea,
         }
       );
 

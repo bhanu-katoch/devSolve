@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
@@ -65,24 +66,26 @@ export default function Home() {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.6, duration: 1 }}
       >
-        <a
-          href="/register-junior"
+                <Link
+          to="/register-junior"
           className="px-6 py-3 bg-blue-600 rounded-lg text-white font-medium hover:bg-blue-700 transition-colors shadow-lg shadow-blue-500/30"
         >
           Join as Junior
-        </a>
-        <a
-          href="/project-lead"
+        </Link>
+
+        <Link
+          to="/project-lead"
           className="px-6 py-3 bg-purple-600 rounded-lg text-white font-medium hover:bg-purple-700 transition-colors shadow-lg shadow-purple-500/30"
         >
           Apply as Project Lead
-        </a>
-        <a
-          href="/guidelines"
+        </Link>
+
+        <Link
+          to="/guidelines"
           className="px-6 py-3 bg-green-600 rounded-lg text-white font-medium hover:bg-green-700 transition-colors shadow-lg shadow-green-500/30"
         >
           View Guidelines
-        </a>
+        </Link>
       </motion.div>
 
       {/* Floating Glow Animation */}
