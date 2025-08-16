@@ -75,7 +75,8 @@ export default function Home() {
 
         <Link
           to="/project-lead"
-          className="px-6 py-3 bg-purple-600 rounded-lg text-white font-medium hover:bg-purple-700 transition-colors shadow-lg shadow-purple-500/30"
+          className="px-6 py-3 bg-purple-600 rounded-lg text-white font-medium hover:bg-purple-700 transition-colors shadow-lg shadow-purple-500/30
+          "
         >
           Apply as Project Lead
         </Link>
