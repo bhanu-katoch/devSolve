@@ -50,6 +50,12 @@ We plan to continuously improve the website to include:
 
 ---
 
+## 🤝 Contributing
+We welcome contributions from club members and the wider developer community.  
+Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to get started.
+
+---
+
 ## 📄 License
 This project is licensed under the terms described in the [LICENSE](LICENSE) file.
 
