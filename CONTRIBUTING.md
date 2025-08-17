@@ -63,6 +63,35 @@ feature/<your-feature-name>
 bugfix/<bug-name>
 enhancement/<enhancement-name>
 ```
+### 🌿 Git Branching Workflow
+
+```text
+        ┌─────────────┐
+        │   main      │  <- Stable, deployable
+        └─────┬───────┘
+              │
+              ▼
+        ┌─────────────┐
+        │    dev      │  <- Latest development
+        └─────┬───────┘
+              │
+      ┌───────┴─────────┐
+      ▼                 ▼
+┌─────────────┐   ┌─────────────┐
+│ feature/foo │   │ feature/bar │  <- Work on features or bug fixes
+└─────────────┘   └─────────────┘
+      │                 │
+      └───────┬─────────┘
+              ▼
+        Pull Request to dev
+              │
+              ▼
+        Merge into dev
+              │
+      After testing & approval
+              ▼
+        Merge dev into main
+```
 - Always **pull latest changes** from `dev` before creating a new branch.
 - Make **small, meaningful commits** with descriptive messages:
 example
