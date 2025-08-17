@@ -41,6 +41,8 @@ We plan to continuously improve the website to include:
 4. **Resource Library** – Learning materials, tutorials, and project documentation.
 5. **Integration with Appwrite** – For authentication, member management, and data storage.
 
+For a detailed breakdown of upcoming features and planned tasks, check the [ISSUES.md](ISSUES.md) file. ✅
+
 ---
 
 ## 🛠 Tech Stack (Planned)
@@ -52,7 +54,8 @@ We plan to continuously improve the website to include:
 
 ## 🤝 Contributing
 We welcome contributions from club members and the wider developer community.  
-Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to get started.
+Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to get started.  
+You can also explore [ISSUES.md](ISSUES.md) for tasks and feature requests.
 
 ---
 
