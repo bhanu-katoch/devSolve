@@ -63,6 +63,12 @@ feature/<your-feature-name>
 bugfix/<bug-name>
 enhancement/<enhancement-name>
 ```
+### How to 
+- first fork this repo
+- then clone your forked repo as below
+```
+git clone --branch dev <your-repo-url>
+```
 ### 🌿 Git Branching Workflow
 
 ```text
