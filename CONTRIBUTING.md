@@ -63,7 +63,7 @@ feature/<your-feature-name>
 bugfix/<bug-name>
 enhancement/<enhancement-name>
 ```
-### How to do
+### How to do  
 - make sure to **uncheck** the only main branch before forking
 - then fork this repo
 - then clone your forked repo as below
