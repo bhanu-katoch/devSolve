@@ -1,4 +1,4 @@
-# 📌 Contribution Guidelines for DevSolve Club Website
+# 📌 Contribution Guidelines for devSolve Club Website
 
 <h1>
   <img src="src/assets/logo.png" alt="Logo" width="50" style="vertical-align: middle;"> devSolve
@@ -63,12 +63,17 @@ feature/<your-feature-name>
 bugfix/<bug-name>
 enhancement/<enhancement-name>
 ```
-### How to 
-- first fork this repo
+### How to do
+- make sure to **uncheck** the only main branch before forking
+- then fork this repo
 - then clone your forked repo as below
 ```
-git clone --branch dev <your-repo-url>
+git clone --branch dev <your-forked-repo-url>
+git checkout -b <your-feature-branch>
 ```
+#### to check branch `git branch`
+#### to push changes `git push origin <your-feature-branch> `
+
 ### 🌿 Git Branching Workflow
 
 ```text

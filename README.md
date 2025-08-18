@@ -1,6 +1,6 @@
 <h1 align="center">
   <img src="src/assets/logo.png" alt="Logo" width="60" style="vertical-align: middle;">  
-  <b>DevSolve Club Website</b>
+  <b>devSolve Club Website</b>
 </h1>
 
 <p align="center">
@@ -10,7 +10,7 @@
 ---
 
 ## 📌 Overview
-The **DevSolve Club Website** is the digital hub for our community of problem solvers.  
+The **devSolve Club Website** is the digital hub for our community of problem solvers.  
 It serves as the central platform for:  
 - 📖 **Club information**  
 - 📜 **Guidelines and rules for joining**  
@@ -84,5 +84,5 @@ We ❤️ contributions from our members and the wider developer community.
 ---
 
 <p align="center">
-  🚀 Built and maintained by <b>DevSolve Club Members</b>  
+  🚀 Built and maintained by <b>devSolve Club Members</b>  
 </p>
