@@ -5,9 +5,9 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { email, otp, Full_name } = req.body;
+    const { email, otp, Full_name, passion } = req.body;
 
-    if (!email || !otp || !Full_name) {
+    if (!email || !otp || !Full_name || !passion) {
       throw new Error("Email, OTP, and Full_name are required");
     }
 
