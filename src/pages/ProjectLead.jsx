@@ -56,13 +56,13 @@ export default function ProjectLead() {
       return;
     }
     try {
-      const res = await fetch("/api/verify-otp-project", {
+      const res = await fetch("/api/otp-verify-project", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: form.email,
           otp,
-          Full_name: form.name,
+          Full_Name: form.name,
           Expertise: form.expertise,
           Description: form.leadershipExperience,
           Project_idea: form.projectIdea,

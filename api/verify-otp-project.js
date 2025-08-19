@@ -5,9 +5,9 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { email, otp, Full_name, Expertise, Description, Project_idea } = req.body;
+    const { email, otp, Full_Name, Expertise, Description, Project_idea } = req.body;
 
-    if (!email || !otp || !Full_name || !Expertise || !Description || !Project_idea) {
+    if (!email || !otp || !Full_Name || !Expertise || !Description || !Project_idea) {
       throw new Error("All fields are required");
     }
 
@@ -18,7 +18,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         email,
         otp,
-        Full_name,
+        Full_Name,
         Expertise,
         Description,
         Project_idea,
