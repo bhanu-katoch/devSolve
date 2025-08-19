@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     const response = await fetch("https://68a3084e0002dd83d8df.fra.appwrite.run/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, otp, Full_name }),
+      body: JSON.stringify({ email, otp, Full_name, passion }),
     });
 
     const data = await response.json();
