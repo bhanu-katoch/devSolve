@@ -1,19 +1,16 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { databases } from "../lib/appwrite";
-import conf from "../lib/config"; // adjust the path
 
 export default function RegisterJunior() {
-  const [step, setStep] = useState(1); // 1 = enter email, 2 = enter OTP + details
+  const [step, setStep] = useState(1);
   const [form, setForm] = useState({ email: "", name: "", passion: "" });
   const [otp, setOtp] = useState("");
   const [message, setMessage] = useState("");
   const [otpSent, setOtpSent] = useState(false);
 
-
   // Send OTP function
   const sendOtp = async () => {
-    if (!form.email) {
+    if (!form.email.trim()) {
       setMessage("Enter email first!");
       return;
     }
@@ -21,17 +18,17 @@ export default function RegisterJunior() {
       const res = await fetch("/api/send-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ data: { email: form.email } }), // send email directly
+        body: JSON.stringify({ data: { email: form.email } }),
       });
       const data = await res.json();
-      console.log(data)
+      console.log(data);
       if (data.success) {
         setMessage(`${data.message}`);
         setOtpSent(true);
         setStep(2);
       } else {
         setMessage(data.error || "Failed to send OTP");
-        setForm({...form,email:""})
+        setForm({ ...form, email: "" });
       }
     } catch (err) {
       console.error(err);
@@ -42,22 +39,25 @@ export default function RegisterJunior() {
 
   // Verify OTP function
   const verifyOtp = async () => {
-    if (!otp) {
-      setMessage("Enter OTP first!");
+    if (!form.name.trim() || !form.passion.trim() || !otp.trim()) {
+      setMessage("All fields are required!");
       return;
     }
     try {
       const res = await fetch("/api/verify-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: form.email, otp,Full_name: form.name }),
+        body: JSON.stringify({
+          email: form.email,
+          otp,
+          Full_name: form.name,
+          passion: form.passion,
+        }),
       });
       const data = await res.json();
       console.log(data);
       if (data.success) {
-        // Save user to DB at verify-otp 
         setMessage("Registration successful!");
-        // Reset everything
         setForm({ email: "", name: "", passion: "" });
         setOtp("");
         setOtpSent(false);
@@ -91,11 +91,17 @@ export default function RegisterJunior() {
               placeholder="Email"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
+              required
               className="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <button
               onClick={sendOtp}
-              className="w-full py-3 bg-blue-600 rounded-lg text-white font-medium hover:bg-blue-700 transition-colors shadow-lg shadow-blue-500/30"
+              disabled={!form.email.trim()}
+              className={`w-full py-3 rounded-lg text-white font-medium transition-colors shadow-lg ${
+                form.email.trim()
+                  ? "bg-blue-600 hover:bg-blue-700 shadow-blue-500/30"
+                  : "bg-gray-600 cursor-not-allowed"
+              }`}
             >
               Send OTP
             </button>
@@ -109,12 +115,14 @@ export default function RegisterJunior() {
               placeholder="Full Name"
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
+              required
               className="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <textarea
               placeholder="Describe Your Passion"
               value={form.passion}
               onChange={(e) => setForm({ ...form, passion: e.target.value })}
+              required
               className="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
             <input
@@ -122,12 +130,18 @@ export default function RegisterJunior() {
               placeholder="Enter OTP"
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
+              required
               className="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
             <div className="flex gap-4">
               <button
                 onClick={verifyOtp}
-                className="flex-1 py-3 bg-green-600 rounded-lg text-white font-medium hover:bg-green-700 transition-colors"
+                disabled={!form.name.trim() || !form.passion.trim() || !otp.trim()}
+                className={`flex-1 py-3 rounded-lg text-white font-medium transition-colors ${
+                  form.name.trim() && form.passion.trim() && otp.trim()
+                    ? "bg-green-600 hover:bg-green-700"
+                    : "bg-gray-600 cursor-not-allowed"
+                }`}
               >
                 Verify OTP
               </button>
@@ -153,6 +167,7 @@ export default function RegisterJunior() {
         )}
       </motion.div>
 
+      {/* Background animation */}
       <motion.div
         className="absolute w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20"
         animate={{
