@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { databases } from "../lib/appwrite"; // make sure this exports a configured Databases instance
-import conf from "../lib/config"; // your Appwrite config
 
 export default function ProjectLead() {
+  const [step, setStep] = useState(1);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -11,160 +10,213 @@ export default function ProjectLead() {
     leadershipExperience: "",
     projectIdea: "",
   });
-
+  const [otp, setOtp] = useState("");
   const [message, setMessage] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // regex
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com|nitp\.ac\.in$/;
-    if (!emailPattern.test(form.email)) {
-      setMessage("Invalid email !");
-      setForm({
-        name: "",
-        email: "",
-        expertise: "",
-        leadershipExperience: "",
-        projectIdea: "",
-      });
-      // Hide message after 3 seconds
-      setTimeout(() => {
-        setMessage("");
-      }, 3000);
+  // Send OTP
+  const sendOtp = async () => {
+    if (!form.email.trim()) {
+      setMessage("Enter email first!");
       return;
     }
     try {
-      // Save form data directly to Appwrite collection
-      const response = await databases.createDocument(
-        conf.database_id,
-        conf.collection_projectLeadRegister,
-        "unique()", // let Appwrite generate a unique document ID
-        {
-          Full_Name: form.name,
+      const res = await fetch("/api/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data: { email: form.email } }),
+      });
+      const data = await res.json();
+      console.log(data);
+      if (data.success) {
+        setMessage(data.message);
+        setOtpSent(true);
+        setStep(2);
+      } else {
+        setMessage(data.error || "Failed to send OTP");
+        setForm({ ...form, email: "" });
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage("Error sending OTP");
+    }
+    setTimeout(() => setMessage(""), 3000);
+  };
+
+  // Verify OTP
+  const verifyOtp = async () => {
+    if (
+      !form.name.trim() ||
+      !form.expertise.trim() ||
+      !form.leadershipExperience.trim() ||
+      !form.projectIdea.trim() ||
+      !otp.trim()
+    ) {
+      setMessage("All fields are required!");
+      return;
+    }
+    try {
+      const res = await fetch("/api/verify-otp-project", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
           email: form.email,
+          otp,
+          Full_name: form.name,
           Expertise: form.expertise,
           Description: form.leadershipExperience,
           Project_idea: form.projectIdea,
-        }
-      );
-
-      setMessage("Application submitted successfully!");
-      console.log(response);
-      setForm({
-        name: "",
-        email: "",
-        expertise: "",
-        leadershipExperience: "",
-        projectIdea: "",
+        }),
       });
-      // Hide message after 3 seconds
-      setTimeout(() => {
-        setMessage("");
-      }, 3000);
+      const data = await res.json();
+      console.log(data);
+      if (data.success) {
+        setMessage("Project Lead registration successful!");
+        setForm({
+          name: "",
+          email: "",
+          expertise: "",
+          leadershipExperience: "",
+          projectIdea: "",
+        });
+        setOtp("");
+        setOtpSent(false);
+        setStep(1);
+      } else {
+        setMessage(data.error || "Invalid OTP");
+      }
     } catch (err) {
-      setMessage(err.message);
       console.error(err);
+      setMessage("Error verifying OTP");
     }
+    setTimeout(() => setMessage(""), 3000);
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white flex flex-col items-center px-6 py-10 relative overflow-hidden scroll-mt-16">
-      {/* Heading */}
-      <motion.h2
-        className="text-4xl md:text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 text-center"
-        initial={{ opacity: 0, y: -30 }}
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white flex items-center justify-center px-6 relative overflow-hidden">
+      <motion.div
+        className="w-full max-w-lg bg-gray-800 rounded-2xl shadow-lg p-8"
+        initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
+        transition={{ duration: 0.8 }}
       >
-        Project Lead Application
-      </motion.h2>
+        <h2 className="text-3xl font-bold mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+          Project Lead Registration
+        </h2>
 
-      {/* Description */}
-      <motion.p
-        className="text-gray-300 text-lg max-w-2xl text-center mb-8"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3, duration: 1 }}
-      >
-        This form is only for seniors who have the technical skills, leadership
-        qualities, and project vision to lead a team of juniors.
-      </motion.p>
-
-      {/* Form */}
-      <motion.form
-        onSubmit={handleSubmit}
-        className="bg-gray-800 p-6 rounded-xl shadow-lg w-full max-w-lg space-y-4"
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 1 }}
-      >
-        <input
-          type="text"
-          placeholder="Full Name"
-          value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-          required
-          className="w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:border-blue-500 focus:outline-none"
-        />
-
-        <input
-          type="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-          required
-          className="w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:border-blue-500 focus:outline-none"
-        />
-
-        <input
-          type="text"
-          placeholder="Primary Expertise (e.g., Web Dev, AI, Blockchain)"
-          value={form.expertise}
-          onChange={(e) => setForm({ ...form, expertise: e.target.value })}
-          required
-          className="w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:border-blue-500 focus:outline-none"
-        />
-
-        <textarea
-          placeholder="Briefly describe your leadership experience"
-          value={form.leadershipExperience}
-          onChange={(e) =>
-            setForm({ ...form, leadershipExperience: e.target.value })
-          }
-          required
-          className="w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:border-blue-500 focus:outline-none"
-        />
-
-        <textarea
-          placeholder="Describe the project idea you want to lead"
-          value={form.projectIdea}
-          onChange={(e) => setForm({ ...form, projectIdea: e.target.value })}
-          required
-          className="w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:border-blue-500 focus:outline-none"
-        />
-
-        <button
-          type="submit"
-          className="w-full px-6 py-3 bg-purple-600 rounded-lg text-white font-medium hover:bg-purple-700 transition-colors shadow-lg shadow-purple-500/30"
-        >
-          Apply as Project Lead
-        </button>
-
-        {message && (
-        <motion.div
-          className="fixed top-50 right-10 bg-purple-500/95 text-white  text-xl px-4 py-2 rounded shadow-lg z-50"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-        >
-          {message}
-        </motion.div>
+        {step === 1 && (
+          <div className="space-y-4">
+            <input
+              type="email"
+              placeholder="Email"
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              required
+              className="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <button
+              onClick={sendOtp}
+              disabled={!form.email.trim()}
+              className={`w-full py-3 rounded-lg text-white font-medium transition-colors shadow-lg ${
+                form.email.trim()
+                  ? "bg-blue-600 hover:bg-blue-700 shadow-blue-500/30"
+                  : "bg-gray-600 cursor-not-allowed"
+              }`}
+            >
+              Send OTP
+            </button>
+          </div>
         )}
 
-      </motion.form>
+        {step === 2 && (
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="Full Name"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              required
+              className="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <input
+              type="text"
+              placeholder="Primary Expertise (e.g., Web Dev, AI, Blockchain)"
+              value={form.expertise}
+              onChange={(e) => setForm({ ...form, expertise: e.target.value })}
+              required
+              className="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+            <textarea
+              placeholder="Briefly describe your leadership experience"
+              value={form.leadershipExperience}
+              onChange={(e) =>
+                setForm({ ...form, leadershipExperience: e.target.value })
+              }
+              required
+              className="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+            <textarea
+              placeholder="Describe the project idea you want to lead"
+              value={form.projectIdea}
+              onChange={(e) =>
+                setForm({ ...form, projectIdea: e.target.value })
+              }
+              required
+              className="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+            <input
+              type="text"
+              placeholder="Enter OTP"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              required
+              className="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+            />
+            <div className="flex gap-4">
+              <button
+                onClick={verifyOtp}
+                disabled={
+                  !form.name.trim() ||
+                  !form.expertise.trim() ||
+                  !form.leadershipExperience.trim() ||
+                  !form.projectIdea.trim() ||
+                  !otp.trim()
+                }
+                className={`flex-1 py-3 rounded-lg text-white font-medium transition-colors ${
+                  form.name.trim() &&
+                  form.expertise.trim() &&
+                  form.leadershipExperience.trim() &&
+                  form.projectIdea.trim() &&
+                  otp.trim()
+                    ? "bg-green-600 hover:bg-green-700"
+                    : "bg-gray-600 cursor-not-allowed"
+                }`}
+              >
+                Verify OTP
+              </button>
+              <button
+                onClick={sendOtp}
+                className="flex-1 py-3 bg-yellow-600 rounded-lg text-white font-medium hover:bg-yellow-700 transition-colors"
+              >
+                Resend OTP
+              </button>
+            </div>
+          </div>
+        )}
 
-      {/* Floating Glow Animation */}
+        {message && (
+          <motion.div
+            className="fixed top-20 right-10 bg-purple-500 text-white text-xl px-4 py-2 rounded shadow-lg z-50"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+          >
+            {message}
+          </motion.div>
+        )}
+      </motion.div>
+
+      {/* Background animation */}
       <motion.div
         className="absolute w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20"
         animate={{
