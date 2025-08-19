@@ -8,5 +8,19 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
-  base: './',  // Important for deployment on Vercel
+  base: './',  // Important for deployment on Vercel,
+  server: {
+    proxy: {
+      "/api/send-otp": {
+        target: "https://68a307f100086675700a.fra.appwrite.run",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/send-otp/, ""),
+      },
+      "/api/verify-otp": {
+        target: "https://68a3084e0002dd83d8df.fra.appwrite.run/",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/verify-otp/, "")
+      },
+    },
+  },
 })
